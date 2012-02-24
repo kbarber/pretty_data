@@ -10,12 +10,22 @@ hash = {
   "d" => false,
   "e" => { "a" => ["test", "foo"] },
   "f" => [["a","b","c"],["d","e",{ "foo" => "bar" }]],
+  "g" => [
+    {
+      "foo" => "asdf",
+      "bar" => "asdf",
+    },
+    {
+      "foo" => "asdf",
+      "bar" => "asdf",
+    },
+  ],
 }
 
 def facter_data(data)
   data.sort.each do |e|
     k,v = e
-    $stdout.write("$#{k} = ")
+    $stdout.write("\e[33m$#{k}\e[0m = ")
     pretty_data(v)
   end
 end
@@ -23,12 +33,12 @@ end
 def pretty_data(data, indent = 0)
   case data
   when Hash
-    puts "{"
+    puts "\e[38;5;104m{\e[0m"
     indent = indent+1
     data.sort.each do |e|
       k,v = e
       indent(indent)
-      $stdout.write "\"#{k}\" => "
+      $stdout.write "\e[32m\"#{k}\"\e[0m => "
       case v
       when String,TrueClass,FalseClass
         pretty_data(v)
@@ -37,9 +47,9 @@ def pretty_data(data, indent = 0)
       end
     end
     indent(indent-1)
-    puts "},"
+    puts "\e[38;5;104m}\e[0m,"
   when Array
-    puts "["
+    puts "\e[38;5;104m[\e[0m"
     indent = indent+1
     data.each do |e|
       indent(indent)
@@ -51,11 +61,11 @@ def pretty_data(data, indent = 0)
       end
     end
     indent(indent-1)
-    puts "],"
+    puts "\e[38;5;104m]\e[0m,"
   when TrueClass,FalseClass
-    puts data.to_s + ","
+    puts "\e[32m#{data}\e[0m,"
   when String
-    puts "\"#{data}\","
+    puts "\e[32m\"#{data}\"\e[0m,"
   end
 end
 
