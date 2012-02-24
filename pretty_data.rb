@@ -12,12 +12,21 @@ hash = {
   "f" => [["a","b","c"],["d","e",{ "foo" => "bar" }]],
 }
 
+def facter_data(data)
+  data.sort.each do |e|
+    k,v = e
+    $stdout.write("$#{k} = ")
+    pretty_data(v)
+  end
+end
+
 def pretty_data(data, indent = 0)
   case data
   when Hash
     puts "{"
     indent = indent+1
-    data.each do |k,v|
+    data.sort.each do |e|
+      k,v = e
       indent(indent)
       $stdout.write "\"#{k}\" => "
       case v
@@ -28,7 +37,7 @@ def pretty_data(data, indent = 0)
       end
     end
     indent(indent-1)
-    puts "}"
+    puts "},"
   when Array
     puts "["
     indent = indent+1
@@ -42,11 +51,11 @@ def pretty_data(data, indent = 0)
       end
     end
     indent(indent-1)
-    puts "]"
+    puts "],"
   when TrueClass,FalseClass
-    puts data.to_s
+    puts data.to_s + ","
   when String
-    puts "\"#{data}\""
+    puts "\"#{data}\","
   end
 end
 
@@ -55,4 +64,5 @@ def indent(num, indent = "  ")
 end
 
 puts hash.inspect
-pretty_data(hash)
+#pretty_data(hash)
+facter_data(hash)
