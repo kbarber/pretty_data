@@ -8,6 +8,8 @@ hash = {
   "b" => ["asdf", "bfgh"],
   "c" => "word",
   "d" => false,
+  "e" => { "a" => ["test", "foo"] },
+  "f" => [["a","b","c"],["d","e",{ "foo" => "bar" }]],
 }
 
 def pretty_data(data, indent = 0)
