@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'facter'
+
 hash = {
   "a" => {
     "a" => "b",
@@ -17,18 +19,9 @@ hash = {
     },
     {
       "foo" => "asdf",
-      "bar" => "asdf",
     },
   ],
 }
-
-def facter_data(data)
-  data.sort.each do |e|
-    k,v = e
-    $stdout.write("\e[33m$#{k}\e[0m = ")
-    pretty_data(v)
-  end
-end
 
 def pretty_data(data, indent = 0)
   case data
@@ -62,8 +55,8 @@ def pretty_data(data, indent = 0)
     end
     indent(indent-1)
     puts "\e[38;5;104m]\e[0m,"
-  when TrueClass,FalseClass
-    puts "\e[32m#{data}\e[0m,"
+  when TrueClass,FalseClass,Numeric
+    puts "\e[36m#{data}\e[0m,"
   when String
     puts "\e[32m\"#{data}\"\e[0m,"
   end
@@ -74,5 +67,4 @@ def indent(num, indent = "  ")
 end
 
 puts hash.inspect
-#pretty_data(hash)
-facter_data(hash)
+pretty_data(hash)
