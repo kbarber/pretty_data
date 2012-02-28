@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'facter'
-
 hash = {
   "a" => {
     "a" => "b",
@@ -15,7 +13,7 @@ hash = {
   "g" => [
     {
       "foo" => "asdf",
-      "bar" => "asdf",
+      "bar" => nil,
     },
     {
       "foo" => "asdf",
@@ -33,7 +31,7 @@ def pretty_data(data, indent = 0)
       indent(indent)
       $stdout.write "\e[32m\"#{k}\"\e[0m => "
       case v
-      when String,TrueClass,FalseClass
+      when String,TrueClass,FalseClass,NilClass
         pretty_data(v)
       when Hash,Array
         pretty_data(v, indent)
@@ -47,7 +45,7 @@ def pretty_data(data, indent = 0)
     data.each do |e|
       indent(indent)
       case e
-      when String,TrueClass,FalseClass
+      when String,TrueClass,FalseClass,NilClass
         pretty_data(e)
       when Hash,Array
         pretty_data(e, indent)
@@ -57,6 +55,8 @@ def pretty_data(data, indent = 0)
     puts "\e[38;5;104m]\e[0m,"
   when TrueClass,FalseClass,Numeric
     puts "\e[36m#{data}\e[0m,"
+  when NilClass
+    puts "\e[36mnil\e[0m,"
   when String
     puts "\e[32m\"#{data}\"\e[0m,"
   end
